@@ -1,5 +1,3 @@
-"use client";
-
 import * as Dialog from "@radix-ui/react-dialog";
 import { ReactNode } from "react";
 
@@ -8,7 +6,7 @@ export default function Modal({
   onOpenChange,
   title,
   children,
-  widthClass = "food-w-full md:food-w-[560px]",
+  widthClass = "food-w-[560px]",
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -19,19 +17,17 @@ export default function Modal({
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="food-fixed food-inset-0 food-bg-black/50 food-z-40" />
-        <div className="food-fixed food-inset-0 food-flex food-items-center food-justify-center food-overflow-y-auto food-z-50 food-p-4">
+        <Dialog.Overlay className="food-fixed food-inset-0 food-bg-black/50" />
+        <div className="food-fixed food-inset-0 food-flex food-items-start food-justify-center food-overflow-y-auto">
           <Dialog.Content
-            className={`food-my-8 food-rounded-2xl food-bg-white food-shadow-xl food-p-6 food-max-h-[90vh] food-overflow-y-auto ${widthClass}`}
+            className={`food-mt-24 food-rounded-2xl food-bg-white food-shadow-xl food-p-6 ${widthClass}`}
             aria-modal
             aria-label={title}
           >
-            <Dialog.Title className="food-text-center food-text-2xl food-font-semibold food-text-orange-500 food-mb-6">
+            <Dialog.Title className="food-text-center food-text-2xl food-font-semibold food-text-slate-800 food-mb-4">
               {title}
             </Dialog.Title>
-            <div className="food-pb-2">
-              {children}
-            </div>
+            {children}
           </Dialog.Content>
         </div>
       </Dialog.Portal>

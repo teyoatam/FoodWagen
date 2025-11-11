@@ -1,6 +1,4 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export interface FoodFormValues {
   food_name: string;
@@ -17,7 +15,7 @@ export const emptyFoodForm: FoodFormValues = {
   food_image: "",
   restaurant_name: "",
   restaurant_logo: "",
-  restaurant_status: "Open Now",
+  restaurant_status: "",
 };
 
 export default function FoodForm({
@@ -44,7 +42,7 @@ export default function FoodForm({
     const ratingNumber = Number(values.food_rating);
     if (Number.isNaN(ratingNumber)) e["food-rating-error"] = "Food Rating must be a number";
     else if (ratingNumber < 1 || ratingNumber > 5)
-      e["food-rating-error"] = "Food Rating must be between 1 and 5";
+      e["food-rating-error"] = "Food Rating must be a number";
     try {
       const u = new URL(values.food_image);
       if (!/^https?:/.test(u.protocol)) throw new Error("invalid");
@@ -59,7 +57,7 @@ export default function FoodForm({
       e["restaurant-logo-error"] = "Restaurant Logo URL is required";
     }
     if (values.restaurant_status !== "Open Now" && values.restaurant_status !== "Closed")
-      e["restaurant-status-error"] = "Restaurant Status must be 'Open Now' or 'Closed'";
+      e["restaurant-status-error"] = "Restaurant Status must be ‘Open Now’ or ‘Closed’";
 
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -74,23 +72,20 @@ export default function FoodForm({
       food_image: values.food_image.trim(),
       restaurant_name: values.restaurant_name.trim(),
       restaurant_logo: values.restaurant_logo.trim(),
-      restaurant_status: values.restaurant_status as "Open Now" | "Closed",
+      restaurant_status: values.restaurant_status,
     });
     setValues(emptyFoodForm);
-    setErrors({});
   };
 
   return (
     <form onSubmit={handleSubmit} className="food-space-y-4" noValidate>
       <div>
-        <label htmlFor="food_name" className="food-block food-text-sm food-font-medium food-text-slate-700">
-          Food Name
-        </label>
+        <label htmlFor="food_name" className="food-block food-text-sm food-font-medium food-text-slate-700">Food Name</label>
         <input
           id="food_name"
           name="food_name"
           placeholder="Enter food name"
-          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500 focus:food-outline-none"
+          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500"
           aria-describedby="food-name-error"
           value={values.food_name}
           onChange={(e) => setValues({ ...values, food_name: e.target.value })}
@@ -104,9 +99,7 @@ export default function FoodForm({
       </div>
 
       <div>
-        <label htmlFor="food_rating" className="food-block food-text-sm food-font-medium food-text-slate-700">
-          Food Rating
-        </label>
+        <label htmlFor="food_rating" className="food-block food-text-sm food-font-medium food-text-slate-700">Food Rating</label>
         <input
           id="food_rating"
           name="food_rating"
@@ -114,7 +107,7 @@ export default function FoodForm({
           min={1}
           max={5}
           placeholder="Food rating (1-5)"
-          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500 focus:food-outline-none"
+          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500"
           aria-describedby="food-rating-error"
           value={values.food_rating}
           onChange={(e) => setValues({ ...values, food_rating: e.target.value === "" ? "" : Number(e.target.value) })}
@@ -128,14 +121,12 @@ export default function FoodForm({
       </div>
 
       <div>
-        <label htmlFor="food_image" className="food-block food-text-sm food-font-medium food-text-slate-700">
-          Food Image URL
-        </label>
+        <label htmlFor="food_image" className="food-block food-text-sm food-font-medium food-text-slate-700">Food Image URL</label>
         <input
           id="food_image"
           name="food_image"
           placeholder="Enter food image url"
-          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500 focus:food-outline-none"
+          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500"
           aria-describedby="food-image-error"
           value={values.food_image}
           onChange={(e) => setValues({ ...values, food_image: e.target.value })}
@@ -149,14 +140,12 @@ export default function FoodForm({
       </div>
 
       <div>
-        <label htmlFor="restaurant_name" className="food-block food-text-sm food-font-medium food-text-slate-700">
-          Restaurant Name
-        </label>
+        <label htmlFor="restaurant_name" className="food-block food-text-sm food-font-medium food-text-slate-700">Restaurant Name</label>
         <input
           id="restaurant_name"
           name="restaurant_name"
           placeholder="Enter restaurant name"
-          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500 focus:food-outline-none"
+          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500"
           aria-describedby="restaurant-name-error"
           value={values.restaurant_name}
           onChange={(e) => setValues({ ...values, restaurant_name: e.target.value })}
@@ -170,14 +159,12 @@ export default function FoodForm({
       </div>
 
       <div>
-        <label htmlFor="restaurant_logo" className="food-block food-text-sm food-font-medium food-text-slate-700">
-          Restaurant Logo URL
-        </label>
+        <label htmlFor="restaurant_logo" className="food-block food-text-sm food-font-medium food-text-slate-700">Restaurant Logo URL</label>
         <input
           id="restaurant_logo"
           name="restaurant_logo"
           placeholder="Enter restaurant logo url"
-          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500 focus:food-outline-none"
+          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500"
           aria-describedby="restaurant-logo-error"
           value={values.restaurant_logo}
           onChange={(e) => setValues({ ...values, restaurant_logo: e.target.value })}
@@ -191,13 +178,11 @@ export default function FoodForm({
       </div>
 
       <div>
-        <label htmlFor="restaurant_status" className="food-block food-text-sm food-font-medium food-text-slate-700">
-          Restaurant Status
-        </label>
+        <label htmlFor="restaurant_status" className="food-block food-text-sm food-font-medium food-text-slate-700">Restaurant Status</label>
         <select
           id="restaurant_status"
           name="restaurant_status"
-          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500 focus:food-outline-none"
+          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500"
           aria-describedby="restaurant-status-error"
           value={values.restaurant_status}
           onChange={(e) => setValues({ ...values, restaurant_status: e.target.value as any })}
@@ -216,17 +201,17 @@ export default function FoodForm({
       <div className="food-flex food-justify-end food-gap-3 food-pt-2">
         <button
           type="button"
-          className="food-rounded-md food-border food-border-slate-200 food-bg-white food-px-5 food-py-2 food-text-slate-700 hover:food-bg-slate-50"
           onClick={onCancel}
+          className="food-rounded-md food-border food-border-slate-200 food-bg-white food-px-4 food-py-2"
           disabled={disabled}
         >
           Cancel
         </button>
         <button
-          type="submit"
           data-test-id="food-submit-btn"
-          className="food-rounded-md food-bg-orange-500 food-text-white food-px-5 food-py-2 hover:food-bg-orange-600 disabled:food-opacity-60"
+          type="submit"
           disabled={disabled}
+          className="food-rounded-md food-bg-orange-500 food-text-white food-px-5 food-py-2 disabled:food-opacity-60"
         >
           {loading ? "Saving..." : "Save"}
         </button>
