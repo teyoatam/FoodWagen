@@ -97,7 +97,7 @@ export default function FoodMain() {
   {/* Hero Section */}
   <section className="food-relative food-bg-[#FFB30E]">
         <div className="food-container food-mx-auto food-max-w-7xl food-px-4 food-flex food-flex-col md:food-flex-row food-items-center food-gap-8 food-py-12 md:food-py-16">
-          <div className="food-flex-1 food-w-full food-pl-10">
+          <div className="food-flex-1 food-w-full food-pl-[32px] food-ml-[32px]">
             <h1 className="food-text-4xl md:food-text-5xl food-font-extrabold food-text-white food-mb-2">
               Are you starving?
             </h1>
@@ -107,7 +107,7 @@ export default function FoodMain() {
 
             <div className="food-mt-6 food-rounded-xl food-bg-white food-p-3 md:food-p-4 food-shadow-lg food-max-w-xl">
               <div className="food-flex food-gap-2 food-mb-3">
-                <button className="food-rounded-full food-bg-[#F17228] hover:food-bg-[#D1601B] food-text-white food-text-sm food-px-4 food-py-1.5 food-font-medium">
+                <button className="food-rounded-full food-bg-[#F17228] hover:food-bg-[#D1601B] food-text-white food-text-xs food-px-4 food-py-1.5 food-font-medium">
                   <span className="food-inline-flex food-items-center food-gap-1">
                     <svg className="food-h-4 food-w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -115,7 +115,7 @@ export default function FoodMain() {
                     Delivery
                   </span>
                 </button>
-                <button className="food-rounded-full food-bg-slate-100 food-text-slate-600 food-text-sm food-px-4 food-py-1.5 food-font-medium">
+                <button className="food-rounded-full food-bg-slate-100 food-text-slate-600 food-text-[11px] food-px-4 food-py-1.5 food-font-medium">
                   <span className="food-inline-flex food-items-center food-gap-1">
                     <svg className="food-h-4 food-w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -139,7 +139,7 @@ export default function FoodMain() {
                     onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
-                <button className="food-rounded-md food-bg-orange-500 food-text-white food-px-6 food-py-2.5 food-font-medium hover:food-bg-orange-600 food-transition food-flex food-items-center food-justify-center food-gap-2">
+                <button className="food-rounded-md food-bg-orange-500 food-text-white food-text-[11px] food-px-6 food-py-2.5 food-font-medium hover:food-bg-orange-600 food-transition food-flex food-items-center food-justify-center food-gap-2">
                   <svg className="food-h-5 food-w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>

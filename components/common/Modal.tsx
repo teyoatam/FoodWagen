@@ -8,6 +8,7 @@ export default function Modal({
   children,
   footer,
   widthClass = "food-w-[560px]",
+  titleClassName,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -15,6 +16,7 @@ export default function Modal({
   children: ReactNode;
   footer?: ReactNode;
   widthClass?: string;
+  titleClassName?: string;
 }) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -27,7 +29,7 @@ export default function Modal({
             aria-label={title}
           >
             <div className="food-sticky food-top-0 food-bg-white food-z-10 food-px-8 food-pt-8 food-pb-4 food-border-b food-border-slate-200">
-              <Dialog.Title className="food-text-center food-text-3xl food-font-bold food-text-orange-500">
+              <Dialog.Title className={titleClassName || "food-text-center food-text-3xl food-font-bold food-text-orange-500"}>
                 {title}
               </Dialog.Title>
             </div>
