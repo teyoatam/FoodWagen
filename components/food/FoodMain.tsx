@@ -44,6 +44,7 @@ export default function FoodMain() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["foods"] });
       setOpen(null);
+      setSelected(null); 
     },
   });
 
@@ -60,6 +61,7 @@ export default function FoodMain() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["foods"] });
       setOpen(null);
+      setSelected(null); 
     },
   });
 
@@ -72,6 +74,7 @@ export default function FoodMain() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["foods"] });
       setOpen(null);
+      setSelected(null); 
     },
   });
 

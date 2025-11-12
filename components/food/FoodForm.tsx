@@ -67,7 +67,15 @@ export default function FoodForm({
   const [values, setValues] = useState<FoodFormValues>({ ...emptyFoodForm, ...initial });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  useEffect(() => setValues((v) => ({ ...v, ...initial })), [initial]);
+  useEffect(() => {
+
+    if (initial) {
+      setValues({ ...emptyFoodForm, ...initial });
+    } else {
+      setValues(emptyFoodForm);
+    }
+    setErrors({});
+  }, [initial]);
 
   const disabled = loading;
 
