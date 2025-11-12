@@ -11,7 +11,7 @@ export default function Header({ onAdd }: { onAdd: () => void }) {
         </Link>
         <Button
           data-test-id="food-add-btn"
-          className="food-bg-orange-500 food-text-white hover:food-bg-orange-600 food-rounded-full food-px-5 food-py-2"
+          className="food-bg-[#FFBA26] shadow-lg food-text-white hover:food-bg-[#FF9A0E] food-rounded-full food-px-5 food-py-2"
           onClick={onAdd}
         >
           Add Food

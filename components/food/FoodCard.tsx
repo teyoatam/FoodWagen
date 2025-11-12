@@ -53,10 +53,10 @@ export default function FoodCard({
               <img
                 src={item.restaurant.logo}
                 alt={item.restaurant.name ?? "Restaurant logo"}
-                className="restaurant-logo food-h-8 food-w-8 food-rounded-full food-object-cover"
+                className="restaurant-logo food-h-8 food-w-8 food-object-cover"
               />
             ) : (
-              <div className="restaurant-logo food-h-8 food-w-8 food-rounded-full food-bg-slate-200" />
+              <div className="restaurant-logo food-h-8 food-w-8 food-bg-slate-200" />
             )}
 
             <div className={`restaurant-status food-text-xs food-inline-flex food-items-center food-gap-2 food-px-2 food-py-0.5 food-rounded-full ${
