@@ -173,10 +173,17 @@ export default function FoodMain() {
           </div>
         )}
 
-        {isLoading && (
+        {isLoading && !debounced && (
           <div className="food-mt-8 food-text-center food-p-8">
             <div className="food-inline-block food-h-8 food-w-8 food-animate-spin food-rounded-full food-border-4 food-border-solid food-border-orange-500 food-border-r-transparent"></div>
             <p className="food-mt-3 food-text-slate-600">Loading delicious food...</p>
+          </div>
+        )}
+
+        {isLoading && debounced && (
+          <div className="food-mt-8 food-text-center food-p-8">
+            <p className="food-text-slate-600 food-font-medium">No food found</p>
+            <p className="food-text-slate-500 food-text-sm food-mt-1">Try a different name or add a new meal</p>
           </div>
         )}
 
@@ -185,8 +192,8 @@ export default function FoodMain() {
             <svg className="food-h-16 food-w-16 food-text-slate-300 food-mx-auto food-mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
             </svg>
-            <p className="food-text-slate-600 food-font-medium food-text-lg">No items available</p>
-            <p className="food-text-slate-500 food-text-sm food-mt-1">Try searching for something else or add a new meal</p>
+            <p className="food-text-slate-600 food-font-medium food-text-lg">{debounced ? 'No food found' : 'No items available'}</p>
+            <p className="food-text-slate-500 food-text-sm food-mt-1">{debounced ? 'Try a different name or add a new meal' : 'Try searching for something else or add a new meal'}</p>
           </div>
         )}
 
