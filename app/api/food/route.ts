@@ -1,21 +1,30 @@
-import { FoodItem } from "@/type/food";
+import { FoodItem, FoodItemInput, FoodItemUpdateInput, PaginatedFoodItems } from "@/type/food";
 import { NextRequest, NextResponse } from "next/server";
 
 const MOCK_API = "https://6852821e0594059b23cdd834.mockapi.io/Food";
 
-
-function normalizeItem(x: any): FoodItem {
+function normalizeItem(x: any): any {
   return {
     id: String(x.id ?? crypto.randomUUID()),
     name: x.name ?? x.food_name ?? "Untitled",
-    image: x.image ?? x.food_image ?? x.avatar ?? "/placeholder.svg",
-    price: x.price ?? x.amount ?? x.priceLabel ?? undefined,
+    image: x.image ?? x.avatar ?? x.food_image ?? "/placeholder.svg",
     rating: typeof x.rating === "number" ? x.rating : Number(x.food_rating ?? 0) || undefined,
-    restaurant: x.restaurant ?? {
-      name: x.restaurant_name,
-      logo: x.restaurant_logo,
-      status: x.restaurant_status,
+    restaurant: {
+      name: x.restaurant?.name ?? x.restaurant_name ?? "Unknown",
+      logo: x.restaurant?.logo ?? x.logo ?? x.restaurant_logo ?? "/placeholder.svg",
+      status: x.restaurant?.status ?? (x.open ? "Open Now" : "Closed"),
     },
+    createdAt: x.createdAt,
+  };
+}
+
+function toApiPayload(input: any) {
+  return {
+    name: input.food_name || input.name,
+    avatar: input.food_image || input.image || input.avatar,
+    rating: input.food_rating || input.rating,
+    open: input.restaurant_status === "Open Now" || input.restaurant?.status === "Open Now",
+    logo: input.restaurant_logo || input.restaurant?.logo || input.logo,
   };
 }
 
@@ -23,13 +32,26 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const name = searchParams.get("name");
+    const page = parseInt(searchParams.get("page") || "1");
+    const pageSize = parseInt(searchParams.get("pageSize") || "10");
+    const sort = searchParams.get("sort");
+    const filter = searchParams.get("filter");
     
-    const url = name 
-      ? `${MOCK_API}?name=${encodeURIComponent(name)}` 
-      : MOCK_API;
+    let url = MOCK_API;
+    const params = new URLSearchParams();
+    
+    if (name) params.append("name", name);
+    if (filter) params.append("filter", filter);
+    if (sort) params.append("sort", sort);
+    if (page) params.append("page", page.toString());
+    if (pageSize) params.append("limit", pageSize.toString());
+    
+    if (params.toString()) {
+      url += `?${params.toString()}`;
+    }
     
     const res = await fetch(url, {
-      cache: "no-store", 
+      cache: "no-store",
     });
     
     if (!res.ok) {
@@ -44,7 +66,15 @@ export async function GET(request: NextRequest) {
       ? data.map(normalizeItem) 
       : [];
     
-    return NextResponse.json({ items: normalized });
+    const totalCount = normalized.length;
+    const totalPages = Math.ceil(totalCount / pageSize);
+    
+    const response: PaginatedFoodItems = {
+      items: normalized,
+      totalCount,
+    };
+    
+    return NextResponse.json(response);
   } catch (error) {
     console.error("GET /api/food error:", error);
     return NextResponse.json(
@@ -56,18 +86,9 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body: FoodItemInput = await request.json();
     
-    const payload = {
-      name: body.food_name || body.name,
-      image: body.food_image || body.image,
-      rating: body.food_rating || body.rating,
-      restaurant: body.restaurant || {
-        name: body.restaurant_name,
-        logo: body.restaurant_logo,
-        status: body.restaurant_status,
-      },
-    };
+    const payload = toApiPayload(body);
     
     const res = await fetch(MOCK_API, {
       method: "POST",
@@ -96,6 +117,7 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
 export async function PUT(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -108,18 +130,9 @@ export async function PUT(request: NextRequest) {
       );
     }
     
-    const body = await request.json();
+    const body: FoodItemUpdateInput = await request.json();
     
-    const payload = {
-      name: body.food_name || body.name,
-      image: body.food_image || body.image,
-      rating: body.food_rating || body.rating,
-      restaurant: body.restaurant || {
-        name: body.restaurant_name,
-        logo: body.restaurant_logo,
-        status: body.restaurant_status,
-      },
-    };
+    const payload = toApiPayload(body);
     
     const res = await fetch(`${MOCK_API}/${id}`, {
       method: "PUT",
@@ -172,9 +185,7 @@ export async function DELETE(request: NextRequest) {
       );
     }
     
-    const data = await res.json();
-    
-    return NextResponse.json({ success: true, data });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("DELETE /api/food error:", error);
     return NextResponse.json(
