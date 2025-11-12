@@ -78,142 +78,155 @@ export default function FoodForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="food-space-y-4" noValidate>
+    <form onSubmit={handleSubmit} className="food-space-y-5" noValidate>
       <div>
-        <label htmlFor="food_name" className="food-block food-text-sm food-font-medium food-text-slate-700">Food Name</label>
+        <label htmlFor="food_name" className="food-block food-text-sm food-font-normal food-text-slate-500 food-mb-2">
+          Food name
+        </label>
         <input
           id="food_name"
           name="food_name"
           placeholder="Enter food name"
-          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500"
+          className="food-input food-w-full food-rounded-lg food-border food-border-slate-200 food-bg-slate-50 food-px-4 food-py-3 food-text-slate-800 placeholder:food-text-slate-400 focus:food-outline-none focus:food-ring-2 focus:food-ring-orange-400 focus:food-border-transparent"
           aria-describedby="food-name-error"
           value={values.food_name}
           onChange={(e) => setValues({ ...values, food_name: e.target.value })}
           disabled={disabled}
         />
         {errors["food-name-error"] && (
-          <p id="food-name-error" className="food-mt-1 food-text-sm food-text-rose-600">
+          <p id="food-name-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
             {errors["food-name-error"]}
           </p>
         )}
       </div>
 
       <div>
-        <label htmlFor="food_rating" className="food-block food-text-sm food-font-medium food-text-slate-700">Food Rating</label>
+        <label htmlFor="food_rating" className="food-block food-text-sm food-font-normal food-text-slate-500 food-mb-2">
+          Food rating
+        </label>
         <input
           id="food_rating"
           name="food_rating"
           type="number"
+          step="0.1"
           min={1}
           max={5}
-          placeholder="Food rating (1-5)"
-          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500"
+          placeholder="Enter rating (1-5)"
+          className="food-input food-w-full food-rounded-lg food-border food-border-slate-200 food-bg-slate-50 food-px-4 food-py-3 food-text-slate-800 placeholder:food-text-slate-400 focus:food-outline-none focus:food-ring-2 focus:food-ring-orange-400 focus:food-border-transparent"
           aria-describedby="food-rating-error"
           value={values.food_rating}
           onChange={(e) => setValues({ ...values, food_rating: e.target.value === "" ? "" : Number(e.target.value) })}
           disabled={disabled}
         />
         {errors["food-rating-error"] && (
-          <p id="food-rating-error" className="food-mt-1 food-text-sm food-text-rose-600">
+          <p id="food-rating-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
             {errors["food-rating-error"]}
           </p>
         )}
       </div>
 
       <div>
-        <label htmlFor="food_image" className="food-block food-text-sm food-font-medium food-text-slate-700">Food Image URL</label>
+        <label htmlFor="food_image" className="food-block food-text-sm food-font-normal food-text-slate-500 food-mb-2">
+          Food image (link)
+        </label>
         <input
           id="food_image"
           name="food_image"
-          placeholder="Enter food image url"
-          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500"
+          placeholder="Enter image URL"
+          className="food-input food-w-full food-rounded-lg food-border food-border-slate-200 food-bg-slate-50 food-px-4 food-py-3 food-text-slate-800 placeholder:food-text-slate-400 focus:food-outline-none focus:food-ring-2 focus:food-ring-orange-400 focus:food-border-transparent"
           aria-describedby="food-image-error"
           value={values.food_image}
           onChange={(e) => setValues({ ...values, food_image: e.target.value })}
           disabled={disabled}
         />
         {errors["food-image-error"] && (
-          <p id="food-image-error" className="food-mt-1 food-text-sm food-text-rose-600">
+          <p id="food-image-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
             {errors["food-image-error"]}
           </p>
         )}
       </div>
 
       <div>
-        <label htmlFor="restaurant_name" className="food-block food-text-sm food-font-medium food-text-slate-700">Restaurant Name</label>
+        <label htmlFor="restaurant_name" className="food-block food-text-sm food-font-normal food-text-slate-500 food-mb-2">
+          Restaurant name
+        </label>
         <input
           id="restaurant_name"
           name="restaurant_name"
           placeholder="Enter restaurant name"
-          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500"
+          className="food-input food-w-full food-rounded-lg food-border food-border-slate-200 food-bg-slate-50 food-px-4 food-py-3 food-text-slate-800 placeholder:food-text-slate-400 focus:food-outline-none focus:food-ring-2 focus:food-ring-orange-400 focus:food-border-transparent"
           aria-describedby="restaurant-name-error"
           value={values.restaurant_name}
           onChange={(e) => setValues({ ...values, restaurant_name: e.target.value })}
           disabled={disabled}
         />
         {errors["restaurant-name-error"] && (
-          <p id="restaurant-name-error" className="food-mt-1 food-text-sm food-text-rose-600">
+          <p id="restaurant-name-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
             {errors["restaurant-name-error"]}
           </p>
         )}
       </div>
 
       <div>
-        <label htmlFor="restaurant_logo" className="food-block food-text-sm food-font-medium food-text-slate-700">Restaurant Logo URL</label>
+        <label htmlFor="restaurant_logo" className="food-block food-text-sm food-font-normal food-text-slate-500 food-mb-2">
+          Restaurant logo (link)
+        </label>
         <input
           id="restaurant_logo"
           name="restaurant_logo"
-          placeholder="Enter restaurant logo url"
-          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500"
+          placeholder="Enter logo URL"
+          className="food-input food-w-full food-rounded-lg food-border food-border-slate-200 food-bg-slate-50 food-px-4 food-py-3 food-text-slate-800 placeholder:food-text-slate-400 focus:food-outline-none focus:food-ring-2 focus:food-ring-orange-400 focus:food-border-transparent"
           aria-describedby="restaurant-logo-error"
           value={values.restaurant_logo}
           onChange={(e) => setValues({ ...values, restaurant_logo: e.target.value })}
           disabled={disabled}
         />
         {errors["restaurant-logo-error"] && (
-          <p id="restaurant-logo-error" className="food-mt-1 food-text-sm food-text-rose-600">
+          <p id="restaurant-logo-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
             {errors["restaurant-logo-error"]}
           </p>
         )}
       </div>
 
       <div>
-        <label htmlFor="restaurant_status" className="food-block food-text-sm food-font-medium food-text-slate-700">Restaurant Status</label>
+        <label htmlFor="restaurant_status" className="food-block food-text-sm food-font-normal food-text-slate-500 food-mb-2">
+          Restaurant status (open/close)
+        </label>
         <select
           id="restaurant_status"
           name="restaurant_status"
-          className="food-input food-mt-1 food-w-full food-rounded-md food-border food-border-slate-200 food-bg-white food-px-3 food-py-2 focus:food-ring-2 focus:food-ring-orange-500"
+          className="food-input food-w-full food-rounded-lg food-border food-border-slate-200 food-bg-slate-50 food-px-4 food-py-3 food-text-slate-800 focus:food-outline-none focus:food-ring-2 focus:food-ring-orange-400 focus:food-border-transparent food-appearance-none"
           aria-describedby="restaurant-status-error"
           value={values.restaurant_status}
           onChange={(e) => setValues({ ...values, restaurant_status: e.target.value as any })}
           disabled={disabled}
         >
-          <option value="Open Now">Open Now</option>
-          <option value="Closed">Closed</option>
+          <option value="Open Now">open</option>
+          <option value="Closed">close</option>
         </select>
         {errors["restaurant-status-error"] && (
-          <p id="restaurant-status-error" className="food-mt-1 food-text-sm food-text-rose-600">
+          <p id="restaurant-status-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
             {errors["restaurant-status-error"]}
           </p>
         )}
       </div>
 
-      <div className="food-flex food-justify-end food-gap-3 food-pt-2">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="food-rounded-md food-border food-border-slate-200 food-bg-white food-px-4 food-py-2"
-          disabled={disabled}
-        >
-          Cancel
-        </button>
+      <div className="food-flex food-gap-3 food-pt-4">
         <button
           data-test-id="food-submit-btn"
           type="submit"
           disabled={disabled}
-          className="food-rounded-md food-bg-orange-500 food-text-white food-px-5 food-py-2 disabled:food-opacity-60"
+          className="food-flex-1 food-rounded-xl food-bg-orange-500 food-text-white food-px-6 food-py-3.5 food-font-semibold food-text-base hover:food-bg-orange-600 food-transition-colors disabled:food-opacity-60 disabled:food-cursor-not-allowed"
         >
           {loading ? "Saving..." : "Save"}
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="food-flex-1 food-rounded-xl food-border-2 food-border-slate-300 food-bg-white food-px-6 food-py-3.5 food-font-semibold food-text-base food-text-slate-700 hover:food-bg-slate-50 food-transition-colors disabled:food-opacity-60 disabled:food-cursor-not-allowed"
+          disabled={disabled}
+        >
+          Cancel
         </button>
       </div>
     </form>
