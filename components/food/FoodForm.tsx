@@ -78,7 +78,8 @@ export default function FoodForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="food-space-y-5" noValidate>
+    <>
+      <form id="food-form" onSubmit={handleSubmit} className="food-space-y-5" noValidate>
       <div>
         <label htmlFor="food_name" className="food-block food-text-sm food-font-normal food-text-slate-500 food-mb-2">
           Food name
@@ -201,8 +202,8 @@ export default function FoodForm({
           onChange={(e) => setValues({ ...values, restaurant_status: e.target.value as any })}
           disabled={disabled}
         >
-          <option value="Open Now">open</option>
-          <option value="Closed">close</option>
+          <option value="Open Now">Open Now</option>
+          <option value="Closed">Closed</option>
         </select>
         {errors["restaurant-status-error"] && (
           <p id="restaurant-status-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
@@ -210,11 +211,13 @@ export default function FoodForm({
           </p>
         )}
       </div>
-
-      <div className="food-flex food-gap-3 food-pt-4">
+    </form>
+    <div className="food-hidden" id="food-form-buttons">
+      <div className="food-flex food-gap-3">
         <button
           data-test-id="food-submit-btn"
           type="submit"
+          form="food-form"
           disabled={disabled}
           className="food-flex-1 food-rounded-xl food-bg-orange-500 food-text-white food-px-6 food-py-3.5 food-font-semibold food-text-base hover:food-bg-orange-600 food-transition-colors disabled:food-opacity-60 disabled:food-cursor-not-allowed"
         >
@@ -229,6 +232,39 @@ export default function FoodForm({
           Cancel
         </button>
       </div>
-    </form>
+    </div>
+    </>
+  );
+}
+
+export function FoodFormButtons({
+  loading,
+  onCancel,
+  disabled,
+}: {
+  loading?: boolean;
+  onCancel: () => void;
+  disabled?: boolean;
+}) {
+  return (
+    <div className="food-flex food-gap-3">
+      <button
+        data-test-id="food-submit-btn"
+        type="submit"
+        form="food-form"
+        disabled={disabled}
+        className="food-flex-1 food-rounded-xl food-bg-orange-500 food-text-white food-px-6 food-py-3.5 food-font-semibold food-text-base hover:food-bg-orange-600 food-transition-colors disabled:food-opacity-60 disabled:food-cursor-not-allowed"
+      >
+        {loading ? "Saving..." : "Save"}
+      </button>
+      <button
+        type="button"
+        onClick={onCancel}
+        className="food-flex-1 food-rounded-xl food-border-2 food-border-slate-300 food-bg-white food-px-6 food-py-3.5 food-font-semibold food-text-base food-text-slate-700 hover:food-bg-slate-50 food-transition-colors disabled:food-opacity-60 disabled:food-cursor-not-allowed"
+        disabled={disabled}
+      >
+        Cancel
+      </button>
+    </div>
   );
 }

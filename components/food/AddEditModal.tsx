@@ -1,5 +1,5 @@
 import Modal from "@/components/common/Modal";
-import FoodForm, { FoodFormValues } from "@/components/food/FoodForm";
+import FoodForm, { FoodFormValues, FoodFormButtons } from "@/components/food/FoodForm";
 import { FoodItem } from "@/components/food/FoodCard";
 import { UseMutationResult } from "@tanstack/react-query";
 
@@ -43,6 +43,13 @@ export default function AddEditModal({
         open={open === "form"} 
         onOpenChange={(o) => setOpen(o ? "form" : null)} 
         title={selected ? "Edit Meal" : "Add a meal"}
+        footer={
+          <FoodFormButtons
+            loading={createMutation.isPending || updateMutation.isPending}
+            onCancel={() => setOpen(null)}
+            disabled={createMutation.isPending || updateMutation.isPending}
+          />
+        }
       >
         <FoodForm
           initial={initialForEdit}

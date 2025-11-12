@@ -6,30 +6,40 @@ export default function Modal({
   onOpenChange,
   title,
   children,
+  footer,
   widthClass = "food-w-[560px]",
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
   children: ReactNode;
+  footer?: ReactNode;
   widthClass?: string;
 }) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="food-fixed food-inset-0 food-bg-black/50 food-z-40" />
-        <div className="food-fixed food-inset-0 food-flex food-items-center food-justify-center food-overflow-y-auto food-z-50 food-p-4">
+        <div className="food-fixed food-inset-0 food-flex food-items-center food-justify-center food-z-50 food-p-4">
           <Dialog.Content
-            className={`food-my-8 food-rounded-3xl food-bg-white food-shadow-2xl food-p-8 food-max-h-[90vh] food-overflow-y-auto ${widthClass} food-max-w-full`}
+            className={`food-my-8 food-rounded-3xl food-bg-white food-shadow-2xl food-max-h-[90vh] food-flex food-flex-col ${widthClass} food-max-w-full food-overflow-hidden`}
             aria-modal
             aria-label={title}
           >
-            <Dialog.Title className="food-text-center food-text-3xl food-font-bold food-text-orange-500 food-mb-6">
-              {title}
-            </Dialog.Title>
-            <div className="food-space-y-1">
+            <div className="food-sticky food-top-0 food-bg-white food-z-10 food-px-8 food-pt-8 food-pb-4 food-border-b food-border-slate-200">
+              <Dialog.Title className="food-text-center food-text-3xl food-font-bold food-text-orange-500">
+                {title}
+              </Dialog.Title>
+            </div>
+
+            <div className="food-flex-1 food-overflow-y-auto food-px-8 food-py-6">
               {children}
             </div>
+            {footer && (
+              <div className="food-sticky food-bottom-0 food-bg-white food-z-10 food-px-8 food-py-4 food-border-t food-border-slate-200">
+                {footer}
+              </div>
+            )}
           </Dialog.Content>
         </div>
       </Dialog.Portal>
