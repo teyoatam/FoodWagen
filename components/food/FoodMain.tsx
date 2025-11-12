@@ -94,10 +94,10 @@ export default function FoodMain() {
     <div className="food-min-h-screen food-bg-white">
       <Header onAdd={startAdd} />
 
-      {/* Hero Section */}
-      <section className="food-relative food-bg-gradient-to-br food-from-amber-300 food-to-orange-500">
+  {/* Hero Section */}
+  <section className="food-relative food-bg-[#FFB30E]">
         <div className="food-container food-mx-auto food-max-w-7xl food-px-4 food-flex food-flex-col md:food-flex-row food-items-center food-gap-8 food-py-12 md:food-py-16">
-          <div className="food-flex-1 food-w-full">
+          <div className="food-flex-1 food-w-full food-pl-10">
             <h1 className="food-text-4xl md:food-text-5xl food-font-extrabold food-text-white food-mb-2">
               Are you starving?
             </h1>
@@ -107,7 +107,7 @@ export default function FoodMain() {
 
             <div className="food-mt-6 food-rounded-xl food-bg-white food-p-3 md:food-p-4 food-shadow-lg food-max-w-xl">
               <div className="food-flex food-gap-2 food-mb-3">
-                <button className="food-rounded-full food-bg-orange-500 food-text-white food-text-sm food-px-4 food-py-1.5 food-font-medium">
+                <button className="food-rounded-full food-bg-[#F17228] hover:food-bg-[#D1601B] food-text-white food-text-sm food-px-4 food-py-1.5 food-font-medium">
                   <span className="food-inline-flex food-items-center food-gap-1">
                     <svg className="food-h-4 food-w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
