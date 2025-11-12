@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
-import { Toaster } from "@/client/components/ui/toaster";
-import { Toaster as Sonner } from "@/client/components/ui/sonner";
-import { TooltipProvider } from "@/client/components/ui/tooltip";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
