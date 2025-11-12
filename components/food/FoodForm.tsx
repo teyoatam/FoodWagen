@@ -212,27 +212,6 @@ export default function FoodForm({
         )}
       </div>
     </form>
-    <div className="food-hidden" id="food-form-buttons">
-      <div className="food-flex food-gap-3">
-        <button
-          data-test-id="food-submit-btn"
-          type="submit"
-          form="food-form"
-          disabled={disabled}
-          className="food-flex-1 food-rounded-xl food-bg-orange-500 food-text-white food-px-6 food-py-3.5 food-font-semibold food-text-base hover:food-bg-orange-600 food-transition-colors disabled:food-opacity-60 disabled:food-cursor-not-allowed"
-        >
-          {loading ? "Saving..." : "Save"}
-        </button>
-        <button
-          type="button"
-          onClick={onCancel}
-          className="food-flex-1 food-rounded-xl food-border-2 food-border-slate-300 food-bg-white food-px-6 food-py-3.5 food-font-semibold food-text-base food-text-slate-700 hover:food-bg-slate-50 food-transition-colors disabled:food-opacity-60 disabled:food-cursor-not-allowed"
-          disabled={disabled}
-        >
-          Cancel
-        </button>
-      </div>
-    </div>
     </>
   );
 }
@@ -253,7 +232,7 @@ export function FoodFormButtons({
         type="submit"
         form="food-form"
         disabled={disabled}
-        className="food-flex-1 food-rounded-xl food-bg-orange-500 food-text-white food-px-6 food-py-3.5 food-font-semibold food-text-base hover:food-bg-orange-600 food-transition-colors disabled:food-opacity-60 disabled:food-cursor-not-allowed"
+        className="food-flex-1 food-rounded-xl food-bg-[#FFBA26] food-text-white food-px-6 food-py-3.5 food-font-semibold food-text-base hover:food-bg-[#FF9A0E] food-transition-colors disabled:food-opacity-60 disabled:food-cursor-not-allowed"
       >
         {loading ? "Saving..." : "Save"}
       </button>

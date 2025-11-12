@@ -29,7 +29,7 @@ export default function Modal({
             aria-label={title}
           >
             <div className="food-sticky food-top-0 food-bg-white food-z-10 food-px-8 food-pt-8 food-pb-4 food-border-b food-border-slate-200">
-              <Dialog.Title className={titleClassName || "food-text-center food-text-3xl food-font-bold food-text-orange-500"}>
+              <Dialog.Title className={titleClassName || "food-text-center food-text-3xl food-font-bold food-text-[#FF9A0E]"}>
                 {title}
               </Dialog.Title>
             </div>
