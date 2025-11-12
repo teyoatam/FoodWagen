@@ -22,7 +22,7 @@ export default function Header({ onAdd }: { onAdd: () => void }) {
           className="food-bg-[#FFBA26] shadow-lg food-text-white food-text-xs hover:food-bg-[#FF9A0E] food-rounded-lg food-px-5 food-py-2"
           onClick={onAdd}
         >
-          Add Meal
+          Add Food
         </Button>
       </div>
   

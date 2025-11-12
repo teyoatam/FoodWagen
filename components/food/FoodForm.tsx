@@ -1,4 +1,39 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { z } from "zod";
+
+const foodFormSchema = z.object({
+  food_name: z.string().min(1, "Food Name is required").trim(),
+  food_rating: z
+    .number({ invalid_type_error: "Food Rating must be a number" })
+    .refine((val) => val >= 1, { message: "Food Rating must be at least 1" })
+    .refine((val) => val <= 5, { message: "Food Rating must be less than or equal to 5" }),
+  food_image: z
+    .string()
+    .min(1, "Food Image URL is required")
+    .refine((url) => {
+      try {
+        const u = new URL(url);
+        return /^https?:/.test(u.protocol);
+      } catch {
+        return false;
+      }
+    }, { message: "Food Image must be a valid http or https URL" }),
+  restaurant_name: z.string().min(1, "Restaurant Name is required").trim(),
+  restaurant_logo: z
+    .string()
+    .min(1, "Restaurant Logo URL is required")
+    .refine((url) => {
+      try {
+        const u = new URL(url);
+        return /^https?:/.test(u.protocol);
+      } catch {
+        return false;
+      }
+    }, { message: "Restaurant Logo must be a valid http or https URL" }),
+  restaurant_status: z.enum(["Open Now", "Closed"], {
+    errorMap: () => ({ message: "Restaurant Status must be 'Open Now' or 'Closed'" }),
+  }),
+});
 
 export interface FoodFormValues {
   food_name: string;
@@ -15,7 +50,7 @@ export const emptyFoodForm: FoodFormValues = {
   food_image: "",
   restaurant_name: "",
   restaurant_logo: "",
-  restaurant_status: "",
+  restaurant_status: "Open Now", 
 };
 
 export default function FoodForm({
@@ -38,26 +73,24 @@ export default function FoodForm({
 
   const validate = (): boolean => {
     const e: Record<string, string> = {};
-    if (!values.food_name.trim()) e["food-name-error"] = "Food Name is required";
-    const ratingNumber = Number(values.food_rating);
-    if (Number.isNaN(ratingNumber)) e["food-rating-error"] = "Food Rating must be a number";
-    else if (ratingNumber < 1 || ratingNumber > 5)
-      e["food-rating-error"] = "Food Rating must be a number";
+    
     try {
-      const u = new URL(values.food_image);
-      if (!/^https?:/.test(u.protocol)) throw new Error("invalid");
-    } catch {
-      e["food-image-error"] = "Food Image URL is required";
+      foodFormSchema.parse({
+        food_name: values.food_name,
+        food_rating: Number(values.food_rating),
+        food_image: values.food_image,
+        restaurant_name: values.restaurant_name,
+        restaurant_logo: values.restaurant_logo,
+        restaurant_status: values.restaurant_status,
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        error.errors.forEach((err) => {
+          const field = err.path[0];
+          e[`${field}-error`] = err.message;
+        });
+      }
     }
-    if (!values.restaurant_name.trim()) e["restaurant-name-error"] = "Restaurant Name is required";
-    try {
-      const u = new URL(values.restaurant_logo);
-      if (!/^https?:/.test(u.protocol)) throw new Error("invalid");
-    } catch {
-      e["restaurant-logo-error"] = "Restaurant Logo URL is required";
-    }
-    if (values.restaurant_status !== "Open Now" && values.restaurant_status !== "Closed")
-      e["restaurant-status-error"] = "Restaurant Status must be ‘Open Now’ or ‘Closed’";
 
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -72,9 +105,8 @@ export default function FoodForm({
       food_image: values.food_image.trim(),
       restaurant_name: values.restaurant_name.trim(),
       restaurant_logo: values.restaurant_logo.trim(),
-      restaurant_status: values.restaurant_status,
+      restaurant_status: values.restaurant_status as "Open Now" | "Closed",
     });
-    setValues(emptyFoodForm);
   };
 
   return (
@@ -89,14 +121,14 @@ export default function FoodForm({
           name="food_name"
           placeholder="Enter food name"
           className="food-input food-w-full food-rounded-lg food-border food-border-slate-200 food-bg-slate-50 food-px-4 food-py-3 food-text-slate-800 placeholder:food-text-slate-400 focus:food-outline-none focus:food-ring-2 focus:food-ring-orange-400 focus:food-border-transparent"
-          aria-describedby="food-name-error"
+          aria-describedby="food_name-error"
           value={values.food_name}
           onChange={(e) => setValues({ ...values, food_name: e.target.value })}
           disabled={disabled}
         />
-        {errors["food-name-error"] && (
-          <p id="food-name-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
-            {errors["food-name-error"]}
+        {errors["food_name-error"] && (
+          <p id="food_name-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
+            {errors["food_name-error"]}
           </p>
         )}
       </div>
@@ -114,14 +146,14 @@ export default function FoodForm({
           max={5}
           placeholder="Enter rating (1-5)"
           className="food-input food-w-full food-rounded-lg food-border food-border-slate-200 food-bg-slate-50 food-px-4 food-py-3 food-text-slate-800 placeholder:food-text-slate-400 focus:food-outline-none focus:food-ring-2 focus:food-ring-orange-400 focus:food-border-transparent"
-          aria-describedby="food-rating-error"
+          aria-describedby="food_rating-error"
           value={values.food_rating}
           onChange={(e) => setValues({ ...values, food_rating: e.target.value === "" ? "" : Number(e.target.value) })}
           disabled={disabled}
         />
-        {errors["food-rating-error"] && (
-          <p id="food-rating-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
-            {errors["food-rating-error"]}
+        {errors["food_rating-error"] && (
+          <p id="food_rating-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
+            {errors["food_rating-error"]}
           </p>
         )}
       </div>
@@ -135,14 +167,14 @@ export default function FoodForm({
           name="food_image"
           placeholder="Enter image URL"
           className="food-input food-w-full food-rounded-lg food-border food-border-slate-200 food-bg-slate-50 food-px-4 food-py-3 food-text-slate-800 placeholder:food-text-slate-400 focus:food-outline-none focus:food-ring-2 focus:food-ring-orange-400 focus:food-border-transparent"
-          aria-describedby="food-image-error"
+          aria-describedby="food_image-error"
           value={values.food_image}
           onChange={(e) => setValues({ ...values, food_image: e.target.value })}
           disabled={disabled}
         />
-        {errors["food-image-error"] && (
-          <p id="food-image-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
-            {errors["food-image-error"]}
+        {errors["food_image-error"] && (
+          <p id="food_image-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
+            {errors["food_image-error"]}
           </p>
         )}
       </div>
@@ -156,14 +188,14 @@ export default function FoodForm({
           name="restaurant_name"
           placeholder="Enter restaurant name"
           className="food-input food-w-full food-rounded-lg food-border food-border-slate-200 food-bg-slate-50 food-px-4 food-py-3 food-text-slate-800 placeholder:food-text-slate-400 focus:food-outline-none focus:food-ring-2 focus:food-ring-orange-400 focus:food-border-transparent"
-          aria-describedby="restaurant-name-error"
+          aria-describedby="restaurant_name-error"
           value={values.restaurant_name}
           onChange={(e) => setValues({ ...values, restaurant_name: e.target.value })}
           disabled={disabled}
         />
-        {errors["restaurant-name-error"] && (
-          <p id="restaurant-name-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
-            {errors["restaurant-name-error"]}
+        {errors["restaurant_name-error"] && (
+          <p id="restaurant_name-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
+            {errors["restaurant_name-error"]}
           </p>
         )}
       </div>
@@ -177,14 +209,14 @@ export default function FoodForm({
           name="restaurant_logo"
           placeholder="Enter logo URL"
           className="food-input food-w-full food-rounded-lg food-border food-border-slate-200 food-bg-slate-50 food-px-4 food-py-3 food-text-slate-800 placeholder:food-text-slate-400 focus:food-outline-none focus:food-ring-2 focus:food-ring-orange-400 focus:food-border-transparent"
-          aria-describedby="restaurant-logo-error"
+          aria-describedby="restaurant_logo-error"
           value={values.restaurant_logo}
           onChange={(e) => setValues({ ...values, restaurant_logo: e.target.value })}
           disabled={disabled}
         />
-        {errors["restaurant-logo-error"] && (
-          <p id="restaurant-logo-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
-            {errors["restaurant-logo-error"]}
+        {errors["restaurant_logo-error"] && (
+          <p id="restaurant_logo-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
+            {errors["restaurant_logo-error"]}
           </p>
         )}
       </div>
@@ -197,7 +229,7 @@ export default function FoodForm({
           id="restaurant_status"
           name="restaurant_status"
           className="food-input food-w-full food-rounded-lg food-border food-border-slate-200 food-bg-slate-50 food-px-4 food-py-3 food-text-slate-800 focus:food-outline-none focus:food-ring-2 focus:food-ring-orange-400 focus:food-border-transparent food-appearance-none"
-          aria-describedby="restaurant-status-error"
+          aria-describedby="restaurant_status-error"
           value={values.restaurant_status}
           onChange={(e) => setValues({ ...values, restaurant_status: e.target.value as any })}
           disabled={disabled}
@@ -205,9 +237,9 @@ export default function FoodForm({
           <option value="Open Now">Open Now</option>
           <option value="Closed">Closed</option>
         </select>
-        {errors["restaurant-status-error"] && (
-          <p id="restaurant-status-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
-            {errors["restaurant-status-error"]}
+        {errors["restaurant_status-error"] && (
+          <p id="restaurant_status-error" className="food-mt-1.5 food-text-xs food-text-rose-500">
+            {errors["restaurant_status-error"]}
           </p>
         )}
       </div>
