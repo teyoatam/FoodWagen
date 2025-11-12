@@ -207,7 +207,7 @@ export default function FoodMain() {
 
             {data.items.length > 8 && (
               <div className="food-mt-10 food-text-center">
-                <button className="food-rounded-full food-bg-orange-500 food-text-white food-px-6 food-py-2.5 food-font-medium hover:food-bg-orange-600 food-transition">
+                <button className="food-rounded-full food-bg-[#FFBA26] food-text-white food-px-6 food-py-2.5 food-font-medium hover:food-bg-[#FF9A0E] food-transition">
                   Load More
                 </button>
               </div>
